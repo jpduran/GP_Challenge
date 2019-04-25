@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gpandroidchallenge.Api.Api;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<UserModel> userEntries;
     Button tryAgain;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
+
         tryAgain = findViewById(R.id.tryAgainButton);
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
                 getUserListData();
             }
         });
+
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createUserIntent = new Intent(MainActivity.this, CreateUser.class);
+                startActivity(createUserIntent);
+            }
+        });
+
         getUserListData();
     }
 

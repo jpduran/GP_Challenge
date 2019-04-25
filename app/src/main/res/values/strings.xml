@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">GP Android Challenge</string>
     <string name="try_again">Try Again</string>
+    <string name="name">Name</string>
+    <string name="lastName">Last Name</string>
+    <string name="add_button">Add</string>
 </resources>
