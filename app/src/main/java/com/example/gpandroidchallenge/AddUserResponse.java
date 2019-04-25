@@ -3,12 +3,6 @@ package com.example.gpandroidchallenge;
 import com.google.gson.annotations.SerializedName;
 
 public class AddUserResponse {
-//    {
-//        "name": "morpheus",
-//            "job": "leader",
-//            "id": "291",
-//            "createdAt": "2019-04-25T17:46:38.379Z"
-//    }
 
     @SerializedName("id")
     private int id;

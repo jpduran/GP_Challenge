@@ -42,21 +42,26 @@ public class CreateUser extends AppCompatActivity {
     }
 
     private void addUser() {
+
+        if(nameEditText.getText().toString().trim().isEmpty() ||
+            lastNameEditText.getText().toString().trim().isEmpty()){
+            Toast.makeText(getApplicationContext(), "Enter a name and a job title.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // display a progress dialog
         final ProgressDialog progressDialog = new ProgressDialog(CreateUser.this);
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show(); // show progress dialog
 
-        // Api is a class in which we define a method getClient() that returns the API Interface class object
-        // registration is a POST request type method in which we are sending our field's data
-        // enqueue is used for callback response and error
         (Api.getClient().createNewUser(nameEditText.getText().toString().trim(),
                 lastNameEditText.getText().toString().trim())).enqueue(new Callback<AddUserResponse>() {
             @Override
             public void onResponse(Call<AddUserResponse> call, Response<AddUserResponse> response) {
                 addUserResponse = response.body();
-                Toast.makeText(getApplicationContext(), "Added with ID: " + response.body().getId(),
+                Toast.makeText(getApplicationContext(), "New user added with ID: " + response.body().getId(),
                         Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 finish();
@@ -66,8 +71,8 @@ public class CreateUser extends AppCompatActivity {
             public void onFailure(Call<AddUserResponse> call, Throwable t) {
                 Log.d("responsePOST", t.getStackTrace().toString());
                 Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                addButton.setText(R.string.try_again);
                 progressDialog.dismiss();
-                finish();
             }
         });
     }
