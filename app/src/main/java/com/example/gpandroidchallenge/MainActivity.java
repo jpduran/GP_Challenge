@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gpandroidchallenge.Api.Api;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     List<UserModel> userEntries;
+    Button tryAgain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +31,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
+        tryAgain = findViewById(R.id.tryAgainButton);
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserListData();
+            }
+        });
         getUserListData();
     }
 
     private void getUserListData() {
+
+        tryAgain.setVisibility(View.GONE);
         // display a progress dialog
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setCancelable(false);
@@ -51,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 // if error occurs in network transaction then we can get the error in this method.
                 Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_LONG).show();
                 Log.d("responseGET", t.toString());
+                tryAgain.setVisibility(View.VISIBLE);
                 progressDialog.dismiss();
             }
         });
