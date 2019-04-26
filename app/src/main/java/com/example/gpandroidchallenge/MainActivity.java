@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         // call the constructor of UsersAdapter to send the reference and data to Adapter
-        UsersAdapter usersAdapter = new UsersAdapter(MainActivity.this, userEntries);
+        UsersAdapter usersAdapter = new UsersAdapter(MainActivity.this);
+        usersAdapter.submitList(userEntries);
         recyclerView.setAdapter(usersAdapter); // set the Adapter to RecyclerView
     }
 

@@ -6,27 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+public class UsersAdapter extends ListAdapter<UserModel, UsersAdapter.UsersViewHolder> {
 
-public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
+    private Context context;
 
-    Context context;
-    List<UserModel> userListResponseData;
-
-    public UsersAdapter(Context context, List<UserModel> userListResponseData) {
-        this.userListResponseData = userListResponseData;
+    public UsersAdapter(Context context) {
+        super(UserModel.DIFF_CALLBACK);
         this.context = context;
+
     }
 
     @Override
     public UsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(context).inflate(R.layout.list_item, null);
         UsersViewHolder usersViewHolder = new UsersViewHolder(view);
         return usersViewHolder;
@@ -34,33 +31,31 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.UsersViewHo
 
     @Override
     public void onBindViewHolder(UsersViewHolder holder, final int position) {
-        // set the data
-        holder.name.setText(userListResponseData.get(position).getFirstName() + " "
-                            + userListResponseData.get(position).getLastName());
-
-        String image_url = userListResponseData.get(position).getAvatarURL();
-
-        Picasso.with(context)
-                .load(image_url)
-                .placeholder(android.R.drawable.sym_def_app_icon)
-                .error(android.R.drawable.sym_def_app_icon)
-                .into(holder.avatar);
-    }
-
-    @Override
-    public int getItemCount() {
-        return userListResponseData.size(); // size of the list items
+        holder.bindTo(getItem(position));
     }
 
     class UsersViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView avatar;
 
-        public UsersViewHolder(View itemView) {
+        private UsersViewHolder(View itemView) {
             super(itemView);
             // get the reference of item view's
             name = (TextView) itemView.findViewById(R.id.userNameTextView);
             avatar = itemView.findViewById(R.id.avatarImageView);
         }
+
+        private void bindTo(UserModel user){
+            name.setText(user.getFirstName() + " " + user.getLastName());
+
+            String image_url = user.getAvatarURL();
+
+            Picasso.with(context)
+                    .load(image_url)
+                    .placeholder(android.R.drawable.sym_def_app_icon)
+                    .error(android.R.drawable.sym_def_app_icon)
+                    .into(avatar);
+        }
     }
+
 }
