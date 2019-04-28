@@ -40,7 +40,6 @@ public class UsersAdapter extends ListAdapter<UserModel, UsersAdapter.UsersViewH
 
         private UsersViewHolder(View itemView) {
             super(itemView);
-            // get the reference of item view's
             name = (TextView) itemView.findViewById(R.id.userNameTextView);
             avatar = itemView.findViewById(R.id.avatarImageView);
         }
@@ -50,12 +49,11 @@ public class UsersAdapter extends ListAdapter<UserModel, UsersAdapter.UsersViewH
 
             String image_url = user.getAvatarURL();
 
-            Picasso.with(context)
+            Picasso.get()
                     .load(image_url)
                     .placeholder(android.R.drawable.sym_def_app_icon)
                     .error(android.R.drawable.sym_def_app_icon)
                     .into(avatar);
         }
     }
-
 }
