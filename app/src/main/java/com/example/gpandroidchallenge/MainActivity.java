@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         tryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getUserListData();
+                // TODO
             }
         });
 
@@ -48,43 +49,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //getUserListData();
         setDataInRecyclerView();
     }
 
-    private void getUserListData() {
-
-        tryAgain.setVisibility(View.GONE);
-        // display a progress dialog
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Please Wait");
-        progressDialog.show();
-
-//        (Api.getClient().getUsersList()).enqueue(new Callback<UsersResponse>() {
-//            @Override
-//            public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
-//                progressDialog.dismiss();
-//                userEntries = response.body().getUsersList();
-//                setDataInRecyclerView();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<UsersResponse> call, Throwable t) {
-//                // if error occurs in network transaction then we can get the error in this method.
-//                Toast.makeText(MainActivity.this, t.toString(), Toast.LENGTH_LONG).show();
-//                Log.d("responseGET", t.toString());
-//                tryAgain.setVisibility(View.VISIBLE);
-//                progressDialog.dismiss();
-//            }
-//        });
-    }
-
     private void setDataInRecyclerView() {
+        final ProgressDialog pd = new ProgressDialog(MainActivity.this);
+        pd.setCancelable(false);
+        pd.setMessage("Please Wait");
+
         UserRepository userRepository = new UserRepository();
         MainViewModelFactory factory =new MainViewModelFactory(userRepository);
         MainViewModel mainViewModel = ViewModelProviders.of(this, factory)
                                         .get(MainViewModel.class);
+        mainViewModel.init();
 
         final UsersAdapter usersAdapter = new UsersAdapter(MainActivity.this);
 
@@ -95,10 +72,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mainViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if(aBoolean){
+                    pd.show();
+                }else{
+                    pd.dismiss();
+                }
+            }
+        });
+
+        mainViewModel.getCallFailure().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    tryAgain.setVisibility(View.VISIBLE);
+                } else {
+                    tryAgain.setVisibility(View.GONE);
+                }
+            }
+        });
+
         // set a LinearLayoutManager with default vertical orientation
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(usersAdapter);
     }
-
 }

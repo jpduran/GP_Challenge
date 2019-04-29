@@ -13,7 +13,6 @@ public class MainViewModel extends ViewModel {
 
     public MainViewModel(UserRepository userRepo){
         this.userRepo = userRepo;
-        init();
     }
 
     public void init(){
@@ -27,4 +26,11 @@ public class MainViewModel extends ViewModel {
         return this.users;
     }
 
+    public LiveData<Boolean> getIsLoading(){
+        return userRepo.getIsLoading();
+    }
+
+    public LiveData<Boolean> getCallFailure(){
+        return userRepo.getCallFailure();
+    }
 }
