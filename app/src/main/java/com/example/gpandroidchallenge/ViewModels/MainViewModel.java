@@ -2,6 +2,7 @@ package com.example.gpandroidchallenge.ViewModels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.example.gpandroidchallenge.UserModel;
 import com.example.gpandroidchallenge.UserRepository;
 
@@ -32,5 +33,9 @@ public class MainViewModel extends ViewModel {
 
     public LiveData<Boolean> getCallFailure(){
         return userRepo.getCallFailure();
+    }
+
+    public void retryCall(){
+        userRepo.getRetryCallback();
     }
 }

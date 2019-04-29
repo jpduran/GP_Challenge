@@ -14,6 +14,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserRepository {
+    private Call<UsersResponse> retryCall;
+    private Callback<UsersResponse> callback;
 
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private final MutableLiveData<Boolean> callFailure = new MutableLiveData<>();
@@ -28,6 +30,8 @@ public class UserRepository {
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
                 users.setValue(response.body().getUsersList());
                 isLoading.setValue(false);
+                callFailure.setValue(false);
+                Log.d("Response GET", "SUCCESS");
             }
 
             @Override
@@ -36,10 +40,16 @@ public class UserRepository {
                 Log.d("Response GET", t.toString());
                 isLoading.setValue(false);
                 callFailure.setValue(true);
+                setCallback(this);
+                retryCall = call.clone();
             }
         });
 
         return users;
+    }
+
+    private void setCallback(Callback<UsersResponse> usersResponseCallback) {
+        callback = usersResponseCallback;
     }
 
     public LiveData<Boolean> getIsLoading(){
@@ -48,5 +58,10 @@ public class UserRepository {
 
     public LiveData<Boolean> getCallFailure(){
         return callFailure;
+    }
+
+    public void getRetryCallback(){
+        isLoading.setValue(true);
+        retryCall.enqueue(callback);
     }
 }

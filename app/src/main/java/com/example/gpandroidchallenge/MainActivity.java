@@ -33,12 +33,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         tryAgain = findViewById(R.id.tryAgainButton);
-        tryAgain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         UserRepository userRepository = new UserRepository();
         MainViewModelFactory factory =new MainViewModelFactory(userRepository);
-        MainViewModel mainViewModel = ViewModelProviders.of(this, factory)
+        final MainViewModel mainViewModel = ViewModelProviders.of(this, factory)
                                         .get(MainViewModel.class);
         mainViewModel.init();
 
@@ -91,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     tryAgain.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        tryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainViewModel.retryCall();
             }
         });
 
