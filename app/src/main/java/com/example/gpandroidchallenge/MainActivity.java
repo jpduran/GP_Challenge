@@ -55,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
         MainViewModelFactory factory =new MainViewModelFactory(userRepository);
         final MainViewModel mainViewModel = ViewModelProviders.of(this, factory)
                                         .get(MainViewModel.class);
-        mainViewModel.init();
+
 
         final UsersAdapter usersAdapter = new UsersAdapter(MainActivity.this);
+
+        //mainViewModel.init();
 
         mainViewModel.getUsers().observe(this, new Observer<List<UserModel>>() {
             @Override
