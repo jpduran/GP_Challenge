@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-public class UsersAdapter extends ListAdapter<UserModel, UsersAdapter.UsersViewHolder> {
+public class UsersAdapter extends PagedListAdapter<UserModel, UsersAdapter.UsersViewHolder> {
 
     private Context context;
 

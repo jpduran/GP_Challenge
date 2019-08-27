@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,11 +60,9 @@ public class MainActivity extends AppCompatActivity {
 
         final UsersAdapter usersAdapter = new UsersAdapter(MainActivity.this);
 
-        //mainViewModel.init();
-
-        mainViewModel.getUsers().observe(this, new Observer<List<UserModel>>() {
+        mainViewModel.getUsers().observe(this, new Observer<PagedList<UserModel>>() {
             @Override
-            public void onChanged(List<UserModel> userModels) {
+            public void onChanged(PagedList<UserModel> userModels) {
                 usersAdapter.submitList(userModels);
             }
         });

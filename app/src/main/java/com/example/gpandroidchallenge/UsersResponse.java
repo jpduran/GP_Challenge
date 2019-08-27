@@ -18,7 +18,6 @@ public class UsersResponse {
     private int totalPages;
     @SerializedName("data")
     private List<UserModel> usersList;
-    //private DataSource.Factory<Integer, UserModel> usersList;
 
     public UsersResponse(int pageNum, int usersPerPage, int totalUsers, int totalPages, List<UserModel> usersList) {
         this.pageNum = pageNum;
